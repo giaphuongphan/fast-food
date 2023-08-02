@@ -24,23 +24,27 @@ for row in rows[1:]:
     nutrition_dict = dict(zip(kfc_headers, values))
     kfc_nutrition_data.append(nutrition_dict)
 
-# print(kfc_nutrition_data)
-# filtered_nutrition_data = filter(lambda x: x.get('Sodium (mg)') and x.get('Allergens') and x.get('Protein (g)') and x.get('Servings (g)') and x.get('Total Fat (g)') and x.get('Saturated fat (g)') and x.get('Carbohydrate (g)') and x.get('Energy (kcal)'), kfc_nutrition_data)
-filtered_nutrition_data = filter(lambda x: x['Sodium (mg)'] and x['Allergens'] and x['Protein (g)'] and x['Servings (g)'] and x['Total Fat (g)'] and x['Saturated fat (g)'] and x['Carbohydr ate (g)'] and x['Energy (kcal)'] in None, kfc_nutrition_data)
-print(kfc_nutrition_data)
+# filtered out items with missing key-value pairs
+filtered_data = []
+for dictionary in kfc_nutrition_data:
+    if len(dictionary.keys()) == 9:
+          filtered_data.append(dictionary)
 
-headers = nutrition_dict.keys()
+#delete irrelevant key-value pairs (Allergens, Servings) from dictionaries on the list
+for dictionaries in filtered_data:
+    del dictionaries['Food']
+    del dictionaries['Allergens']
+    del dictionaries['Servings (g)']
 
-# file_path = '/Users/giaphuong/Desktop/Dev/fast food data scrapping/kfc_data.csv'
-# with open(file_path,'w') as csv_file:
-#     csv_writer = csv.DictWriter(csv_file, fieldnames=headers)
-#     csv_writer.writeheader()
-#     csv_writer.writerows(filtered_nutrition_data)
+first_item = filtered_data[0]
+headers = first_item.keys()
 
-# # csv_writer.writerow(kfc_headers)
-# # csv_writer.writerow(kfc_nutrition_data)
-# # for interation in range(len(nutrition_data)):
-# #     csv_writer.writerow([val[interation] for val in nutrition_data])
+# write and save data to a csv file
+file_path = '/Users/giaphuong/Desktop/Dev/fast food data scrapping/kfc_data.csv'
+with open(file_path,'w') as csv_file:
+    csv_writer = csv.DictWriter(csv_file, fieldnames=headers)
+    csv_writer.writeheader()
+    csv_writer.writerows(filtered_data)
 
-# csv_file.close()
+csv_file.close()
 
