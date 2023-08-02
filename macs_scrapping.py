@@ -1,14 +1,6 @@
 from requests_html import HTMLSession, HTML
 import csv
 
-headers = dict_obj.keys()
-
-file_path = '/Users/giaphuong/Desktop/Dev/fast food data scrapping/macs_data.csv'
-with open(file_path,'w') as csv_file:
-    csv_writer = csv.DictWriter(csv_file, fieldnames=headers)
-    csv_writer.writeheader()
-    csv_writer.writerows(dict_obj)
-
 macs_url = 'https://www.mcdonalds.com.sg/full-menu'
 
 session = HTMLSession()
@@ -35,6 +27,14 @@ print(food)
 # csv_writer.writerow(kfc_nutrition_data)
 # # for interation in range(len(nutrition_data)):
 # #     csv_writer.writerow([val[interation] for val in nutrition_data])
+
+# headers = dict_obj.keys()
+
+# file_path = '/Users/giaphuong/Desktop/Dev/fast food data scrapping/macs_data.csv'
+# with open(file_path,'w') as csv_file:
+#     csv_writer = csv.DictWriter(csv_file, fieldnames=headers)
+#     csv_writer.writeheader()
+#     csv_writer.writerows(dict_obj)
 
 # csv_file.close()
 
