@@ -75,10 +75,11 @@ def main():
     pprint.pprint(scraped_food)
 
     # Write and save data to a kfc_data.csv file
-    write_to_csv(file_path = f"{DATA_DIR}/kfc_data.csv",
+    csv_file_path = f"{DATA_DIR}/kfc_data.csv"
+    write_to_csv(file_path=csv_file_path,
                  data=scraped_food)
 
-    df = pd.read_csv(f"{DATA_DIR}/kfc_data.csv", thousands=",")
+    df = pd.read_csv(filepath_or_buffer=csv_file_path, thousands=",")
 
     new_servings = []
     for val in df["Servings (g or ml)"]:
@@ -89,7 +90,7 @@ def main():
     new_column = pd.Series(new_servings, name='Servings (g or ml)')
     df.update(new_column)
 
-    df.to_csv(f"{DATA_DIR}/kfc_data.csv", index=False)
+    df.to_csv(path_or_buf=csv_file_path, index=False)
 
 if __name__ == "__main__":
     main()
