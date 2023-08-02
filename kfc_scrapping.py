@@ -8,6 +8,7 @@ import pandas as pd
 
 DATA_DIR = f"{os.getcwd()}/data"
 KFC_URL = "https://www.kfc.com.sg/nutrition-allergen"
+NUM_NUTRIENTS = 9
 
 
 def write_to_csv(file_path: str,
@@ -41,8 +42,8 @@ def main():
         header = table_rows[0]
         nutrients = header.find("th")
 
-        current_allergens = ""
-        if len(nutrients) >= 9:
+        current_allergens = None
+        if len(nutrients) >= NUM_NUTRIENTS:
             food_list = table_rows[1:]
             for idx, food in enumerate(food_list):
                 name = food.find("td")[0].text
@@ -57,7 +58,7 @@ def main():
                 scraped_food[name] = {
                     "Food": name,
                     "Allergens": current_allergens,
-                    "Servings (g)": weights[0],
+                    "Servings (g or ml)": weights[0],
                     "Energy (kcal)": weights[1],
                     "Protein (g)": weights[2],
                     "Total Fat (g)": weights[3],
@@ -67,15 +68,25 @@ def main():
                 }
 
 
-            current_allergens = ""
+            current_allergens = None
     pprint.pprint(scraped_food)
 
     # Write and save data to a kfc_data.csv file
     write_to_csv(file_path = f"{DATA_DIR}/kfc_data.csv",
                  data=scraped_food)
 
-    df = pd.read_csv(f"{DATA_DIR}/kfc_data.csv", thousands=',')
-    print(df.info())
+    df = pd.read_csv(f"{DATA_DIR}/kfc_data.csv", thousands=",")
+
+    new_servings = []
+    for val in df["Servings (g or ml)"]:
+        if "ml" not in val:
+            val += "g"
+        new_servings.append(val)
+
+    new_column = pd.Series(new_servings, name='Servings (g or ml)')
+    df.update(new_column)
+
+    df.to_csv(f"{DATA_DIR}/kfc_data.csv", index=False)
 
 if __name__ == "__main__":
     main()
