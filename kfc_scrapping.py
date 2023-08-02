@@ -10,6 +10,9 @@ DATA_DIR = f"{os.getcwd()}/data"
 KFC_URL = "https://www.kfc.com.sg/nutrition-allergen"
 NUM_NUTRIENTS = 9
 
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR)
+
 
 def write_to_csv(file_path: str,
                  data: Dict):
