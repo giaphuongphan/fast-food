@@ -1,50 +1,81 @@
-from requests_html import HTMLSession, HTML
+import os
+from requests_html import HTMLSession
 import csv
+from typing import Dict, List
+import pprint
+import pandas as pd
 
-kfc_url = 'https://www.kfc.com.sg/nutrition-allergen'
 
-session = HTMLSession()
-result = session.get(kfc_url)
-result.html.render()
+DATA_DIR = f"{os.getcwd()}/data"
+KFC_URL = "https://www.kfc.com.sg/nutrition-allergen"
 
-# extract data from nutrion tables on kfc website
-tables = result.html.find('table.table.table-bordered.tableChartNutrition.table-sm')
-rows = result.html.find('tr')
-# rows = tables[0].find('tr')
 
-kfc_nutrition_data = []
+def write_to_csv(file_path: str,
+                 data: Dict):
 
-header_row = rows[0]
-kfc_headers = [header.text for header in header_row.find('th')]
+    headers = data[list(data.keys())[0]].keys()
 
-# Loop through all cells in the table except for the second column (index 1)
-for row in rows[1:]:
-    values = [cell.text for cell in row.find('td.align-middle')]
-    # save the data to dictionaries with respective key-value pairs
-    nutrition_dict = dict(zip(kfc_headers, values))
-    kfc_nutrition_data.append(nutrition_dict)
+    with open(file=file_path, mode="w") as csv_file:
+        csv_writer = csv.DictWriter(csv_file, fieldnames=headers)
+        csv_writer.writeheader()
 
-# filtered out items with missing key-value pairs
-filtered_data = []
-for dictionary in kfc_nutrition_data:
-    if len(dictionary.keys()) == 9:
-          filtered_data.append(dictionary)
+        for food in data.keys():
+            csv_writer.writerow(data[food])
 
-#delete irrelevant key-value pairs (Allergens, Servings) from dictionaries on the list
-for dictionaries in filtered_data:
-    del dictionaries['Food']
-    del dictionaries['Allergens']
-    del dictionaries['Servings (g)']
+    csv_file.close()
 
-first_item = filtered_data[0]
-headers = first_item.keys()
+def main():
 
-# write and save data to a csv file
-file_path = '/Users/giaphuong/Desktop/Dev/fast food data scrapping/kfc_data.csv'
-with open(file_path,'w') as csv_file:
-    csv_writer = csv.DictWriter(csv_file, fieldnames=headers)
-    csv_writer.writeheader()
-    csv_writer.writerows(filtered_data)
+    session = HTMLSession()
+    result = session.get(KFC_URL)
+    result.html.render()
 
-csv_file.close()
+    # Extract data from nutrion tables on kfc website
+    tables = result.html.find("table.table.table-bordered.tableChartNutrition.table-sm")
+    scraped_food = {}
 
+    for table in tables:
+        table_body = table.find("tbody")[0]
+        table_rows = table_body.find("tr")
+
+        header = table_rows[0]
+        nutrients = header.find("th")
+
+        current_allergens = ""
+        if len(nutrients) >= 9:
+            food_list = table_rows[1:]
+            for idx, food in enumerate(food_list):
+                name = food.find("td")[0].text
+
+                if idx == 0:
+                    current_allergens_list = food.find("td")[1].find("ul")[0].find("li")
+                    current_allergens = ",".join([allergen.text for allergen in current_allergens_list])
+                    weights =  [val.text for val in food.find("td")[2:9]]
+                else:
+                    weights = [val.text for val in food.find("td")[1:8]]
+
+                scraped_food[name] = {
+                    "Food": name,
+                    "Allergens": current_allergens,
+                    "Servings (g)": weights[0],
+                    "Energy (kcal)": weights[1],
+                    "Protein (g)": weights[2],
+                    "Total Fat (g)": weights[3],
+                    "Saturated Fat (g)": weights[4],
+                    "Carbohydrate (g)": weights[5],
+                    "Sodium (mg)": weights[6]
+                }
+
+
+            current_allergens = ""
+    pprint.pprint(scraped_food)
+
+    # Write and save data to a kfc_data.csv file
+    write_to_csv(file_path = f"{DATA_DIR}/kfc_data.csv",
+                 data=scraped_food)
+
+    df = pd.read_csv(f"{DATA_DIR}/kfc_data.csv", thousands=',')
+    print(df.info())
+
+if __name__ == "__main__":
+    main()
