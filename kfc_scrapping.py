@@ -20,6 +20,8 @@ kfc_headers = [header.text for header in header_row.find('th')]
 # Loop through all cells in the table except for the second column (index 1)
 for row in rows[1:]:
     values = [cell.text for cell in row.find('td.align-middle')]
+    values = [value.replace(',', '') for value in values]
+
     # save the data to dictionaries with respective key-value pairs
     nutrition_dict = dict(zip(kfc_headers, values))
     kfc_nutrition_data.append(nutrition_dict)
@@ -31,10 +33,10 @@ for dictionary in kfc_nutrition_data:
           filtered_data.append(dictionary)
 
 #delete irrelevant key-value pairs (Allergens, Servings) from dictionaries on the list
-for dictionaries in filtered_data:
-    del dictionaries['Food']
-    del dictionaries['Allergens']
-    del dictionaries['Servings (g)']
+for dictionary in filtered_data:
+    del dictionary['Food']
+    del dictionary['Allergens']
+    del dictionary['Servings (g)']
 
 first_item = filtered_data[0]
 headers = first_item.keys()
@@ -47,4 +49,3 @@ with open(file_path,'w') as csv_file:
     csv_writer.writerows(filtered_data)
 
 csv_file.close()
-

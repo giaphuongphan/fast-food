@@ -66,20 +66,27 @@ def task(url: str) -> Dict:
     # delete Cholesterol and Dietary Fibres from the nutrition fact lists for comparison with kfc
     del nutrition_facts_text[8:10]
     del nutrition_facts_text[9:11]
+
     # create key-value pairs for dictionaries
     nutrition_dict_keys = nutrition_facts_text[::2]
+
+    # add the units to each key/header 
+    nutrition_dict_keys = [key.replace('Energy', 'Energy (kcal)') for key in nutrition_dict_keys]
+    nutrition_dict_keys = [key.replace('Protein', 'Protein (g)') for key in nutrition_dict_keys]
+    nutrition_dict_keys = [key.replace('Total Fat', 'Total Fat (g)') for key in nutrition_dict_keys]
+    nutrition_dict_keys = [key.replace('Saturated Fat', 'Saturated fat (g)') for key in nutrition_dict_keys]
+    nutrition_dict_keys = [key.replace('Carbohydrates', 'Carbohydrate (g)') for key in nutrition_dict_keys]
+    nutrition_dict_keys = [key.replace('Sodium', 'Sodium (mg)') for key in nutrition_dict_keys]
+
     nutrition_dict_values = nutrition_facts_text[1::2]
     # remove the unnecessary information and retain only the numeral values for the nutrition data
     nutrition_dict_numbers = []
 
     for value in nutrition_dict_values:
-        # element = value.split(" ")[0]
-        # del element[1]
-        # nutrition_dict_numbers.append(" ".join(element))
         element = value.split(" ")[0]
         nutrition_dict_numbers.append(element)   
     
-    print(nutrition_dict_numbers)
+    # print(nutrition_dict_numbers)
     macs_nutrition_dict = {key: value for key, value in zip(nutrition_dict_keys, nutrition_dict_numbers)}
     session.close()
     return macs_nutrition_dict
@@ -102,7 +109,6 @@ def main():
     """
     Entry point of scraping program
     """
-
     macs_url = 'https://www.mcdonalds.com.sg/full-menu'
 
     URLs = prefetch_urls(macs_url)
@@ -114,9 +120,9 @@ def main():
 
         for result in results:
             macs_nutrition_data.append(result)
-    print(macs_nutrition_data)
+    # print(macs_nutrition_data)
     write_to_csv(macs_nutrition_data)
 
-if task == "__main__":
+if __name__ == "__main__":
     main()
 

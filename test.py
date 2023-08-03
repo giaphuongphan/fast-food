@@ -1,10 +1,16 @@
-nutrition_dict_values = ['507.00 kcal','32.00 g','25.00 g','13.00 g','3.00 g','1265.00 mg']
+import pandas as pd
 
-nutrition_dict_numbers = []
+# Example summary DataFrames (replace these with your actual DataFrames)
+data1 = {'Metric': ['Mean', 'Std', 'Min', 'Max'],
+         'Value': [10, 2, 5, 15]}
+summary_df1 = pd.DataFrame(data1)
 
-for value in nutrition_dict_values:
-    element = value.split()
-    del element[1]
-    nutrition_dict_numbers.append(' '.join(element)) 
-    
-print(nutrition_dict_numbers)
+data2 = {'Metric': ['Mean', 'Std', 'Min', 'Max'],
+         'Value': [25, 3, 18, 30]}
+summary_df2 = pd.DataFrame(data2)
+
+# Concatenate the summary DataFrames
+combined_summary = pd.concat([summary_df1, summary_df2], keys=['Analysis 1', 'Analysis 2'])
+
+# Save the combined summary to a CSV file
+combined_summary.to_csv('combined_summary.csv', index=False)
