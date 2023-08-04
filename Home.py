@@ -61,7 +61,7 @@ if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
 if openai_api_key.startswith('sk-'):
     agent = create_pandas_dataframe_agent(
-        ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model="gpt-3.5-turbo"),
+        ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model="gpt-3.5-turbo", max_retries=3),
         chart_df,
         verbose=True,
         agent_type=AgentType.OPENAI_FUNCTIONS,
@@ -83,8 +83,14 @@ if openai_api_key.startswith('sk-'):
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
             full_response = ""
-            for response in agent.run(prompt):
-                full_response += response.choices[0].delta.get("content", "")
+
+            try:
+                response = agent.run(prompt)
+                for res in response:
+                    full_response += res
                 message_placeholder.markdown(full_response + "▌")
-            message_placeholder.markdown(full_response)
+                message_placeholder.markdown(full_response)
+            except Exception as ex:
+                full_response = f"{str(ex)} ⚠"
+
         st.session_state.messages.append({"role": "assistant", "content": full_response})
