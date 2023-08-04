@@ -63,7 +63,8 @@ if not openai_api_key.startswith('sk-'):
 if openai_api_key.startswith('sk-'):
     agent = create_pandas_dataframe_agent(
         ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model="gpt-3.5-turbo"),
-        chart_df,
+        df=chart_df,
+        verbose=True,
         agent_type=AgentType.OPENAI_FUNCTIONS,
         max_iterations=2,
         max_execution_time=10
