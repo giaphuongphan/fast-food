@@ -5,6 +5,7 @@ import plotly.express as px
 from langchain.agents import create_pandas_dataframe_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.agents.agent_types import AgentType
+import time
 
 
 RESTAURANT_PATH_MAP = {
@@ -61,10 +62,11 @@ if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
 if openai_api_key.startswith('sk-'):
     agent = create_pandas_dataframe_agent(
-        ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model="gpt-3.5-turbo", max_retries=3),
+        ChatOpenAI(openai_api_key=openai_api_key, temperature=0.2, model="gpt-3.5-turbo"),
         chart_df,
-        verbose=True,
         agent_type=AgentType.OPENAI_FUNCTIONS,
+        max_iterations=2,
+        max_execution_time=10
     )
 
     if "messages" not in st.session_state:
@@ -86,11 +88,13 @@ if openai_api_key.startswith('sk-'):
 
             try:
                 response = agent.run(prompt)
-                for res in response:
-                    full_response += res
-                message_placeholder.markdown(full_response + "▌")
-                message_placeholder.markdown(full_response)
             except Exception as ex:
-                full_response = f"{str(ex)} ⚠"
-
-        st.session_state.messages.append({"role": "assistant", "content": full_response})
+                response = f"⚠ OpenAI API Problems ⚠"
+            finally:
+                for res in response.split():
+                    full_response += res + " "
+                    time.sleep(0.1)
+                    message_placeholder.markdown(full_response + "▌")
+                    message_placeholder.markdown(full_response + "▌")
+                message_placeholder.markdown(full_response)
+                st.session_state.messages.append({"role": "assistant", "content": full_response})
