@@ -9,7 +9,8 @@ import time
 
 
 RESTAURANT_PATH_MAP = {
-    "KFC": f"{os.getcwd()}/data/kfc_data.csv"
+    "KFC": f"{os.getcwd()}/data/kfc_data.csv",
+    "MacDonald's": f"{os.getcwd()}/data/macs_data.csv"
 }
 
 
@@ -28,7 +29,7 @@ st.set_page_config(
 st.markdown(body="# 🍔 Dashboard")
 
 restaurant = st.sidebar.selectbox(label="Restaurant 👨‍🍳",
-                                  options=["KFC"])
+                                  options=["KFC", "MacDonald's"])
 
 if restaurant:
     df = load_dataframe(RESTAURANT_PATH_MAP[restaurant])

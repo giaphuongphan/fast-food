@@ -60,14 +60,14 @@ def main():
 
                 scraped_food[name] = {
                     "Food": name,
-                    "Allergens": current_allergens,
-                    "Servings (g or ml)": weights[0],
-                    "Energy (kcal)": weights[1],
-                    "Protein (g)": weights[2],
-                    "Total Fat (g)": weights[3],
-                    "Saturated Fat (g)": weights[4],
-                    "Carbohydrate (g)": weights[5],
-                    "Sodium (mg)": weights[6]
+                    # "Allergens": current_allergens,
+                    # "Servings (g or ml)": weights[0],
+                    "Energy": weights[1],
+                    "Protein": weights[2],
+                    "Total Fat": weights[3],
+                    "Saturated Fat": weights[4],
+                    "Carbohydrates": weights[5],
+                    "Sodium": weights[6]
                 }
 
 
@@ -81,14 +81,14 @@ def main():
 
     df = pd.read_csv(filepath_or_buffer=csv_file_path, thousands=",")
 
-    new_servings = []
-    for val in df["Servings (g or ml)"]:
-        if "ml" not in val:
-            val += "g"
-        new_servings.append(val)
+    # new_servings = []
+    # for val in df["Servings (g or ml)"]:
+    #     if "ml" not in val:
+    #         val += "g"
+    #     new_servings.append(val)
 
-    new_column = pd.Series(data=new_servings, name='Servings (g or ml)')
-    df.update(other=new_column)
+    # new_column = pd.Series(data=new_servings, name='Servings (g or ml)')
+    # df.update(other=new_column)
 
     df.to_csv(path_or_buf=csv_file_path, index=False)
 
