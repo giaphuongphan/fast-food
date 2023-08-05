@@ -42,7 +42,7 @@ chart_df = df.loc[:, df_cols]
 col1, col2 = st.columns(2)
 with col1:
     nutrient = st.selectbox(label="Bar chart",
-                        options=df_cols[3:],
+                        options=df_cols[1:],
                         key="col1_box")
     st.bar_chart(data=chart_df.loc[:, ["Food", nutrient]], y=nutrient, x="Food")
 
@@ -91,7 +91,7 @@ if openai_api_key.startswith('sk-'):
             try:
                 response = agent.run(prompt)
             except Exception as ex:
-                response = f"⚠ OpenAI API Problems ⚠"
+                response = f"Sorry, I am unable to provide you an answer 😭"
             finally:
                 for res in response.split():
                     full_response += res + " "
