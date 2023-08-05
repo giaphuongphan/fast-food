@@ -19,8 +19,11 @@ streamlit run Home.py
 ```
 
 ### UI Screens
-1. DataFrame
+1. **DataFrame**
+![alt text](https://github.com/giaphuongphan/fast-food-data-scrapping/blob/main/Dataframe.png)
 
-2. Chart Visualisation
+2. **Chart Visualisation**
+![alt text](https://github.com/giaphuongphan/fast-food-data-scrapping/blob/main/Viz.png)
 
-3. DataFrame Chat (OpenAI)
+3. **DataFrame Chat (OpenAI)**
+![alt text](https://github.com/giaphuongphan/fast-food-data-scrapping/blob/main/Chat.png)
