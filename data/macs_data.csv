@@ -1,0 +1,99 @@
+Food,Energy,Protein,Total Fat,Saturated Fat,Carbohydrates,Sodium
+Quarter Pounder,507.00,32.00,25.00,13.00,38.00,1265.00
+Double Quarter Pounder,717.00,50.00,40.00,20.00,39.00,1698.00
+Cheeseburger,303.00,16.00,12.00,6.00,32.00,860.00
+Double Cheeseburger,443.00,27.00,22.00,12.00,34.00,1360.00
+Mcspicy,541.00,23.00,28.00,6.00,50.00,1269.00
+Double Mcspicy,833.00,38.00,46.00,9.00,66.00,2161.00
+Filet O Fish,332.00,15.00,13.00,5.00,38.00,562.00
+Double Filet O Fish,466.00,24.00,20.00,8.00,48.00,756.00
+Hamburger,253.00,14.00,8.00,4.00,31.00,690.00
+Mcchicken,391.00,15.00,18.00,3.00,42.00,751.00
+Big Mac,558.00,28.00,28.00,11.00,48.00,1321.00
+Buttermilk Crispy Chicken,739.00,26.00,42.00,7.00,64.00,1422.00
+Chickenmccrispy,689.00,39.00,41.00,8.00,42.00,1895.00
+Chickenmccrispy6pc,2068.00,117.00,122.00,25.10,125.00,5685.00
+Chicken Mcnuggets 6pc,273.00,14.00,16.00,2.00,17.00,506.00
+Chicken Mcnuggets 9pc,409.00,21.00,24.00,3.00,26.00,759.00
+Chicken Mcnuggets 20pc,910.00,46.00,54.00,7.00,57.00,1686.00
+Mcwings 2pc,302.00,17.00,20.00,4.00,12.00,682.00
+Mcwings 4pc,603.00,35.00,41.00,8.00,25.00,1363.00
+Skinless Grilled Chicken Mcwrap Wholegrain,361.00,23.00,18.00,5.00,29.00,992.00
+Skinless Grilled Chicken Salad,173.00,20.00,7.00,2.00,7.00,533.00
+Garden Side Salad,21.00,1.00,0.00,0.00,4.00,10.00
+Happy Sharing Box A,1730.00,101.00,109.00,20.00,85.00,3698.00
+Happy Sharing Box B,865.00,50.00,54.00,10.00,43.00,1849.00
+Cheeseburger Happy Meal,386.00,25.00,14.00,7.00,56.00,820.00
+Chicken Mcnuggets 4pc Happy Meal,204.00,10.00,12.00,1.00,13.00,378.00
+Rod Fm Chb,0.00,0.00,0.00,0.00,0.00,0.00
+Rod Fm Nug,0.00,0.00,0.00,0.00,0.00,0.00
+Big Breakfast,496.00,27.00,22.00,6.00,47.00,971.00
+Breakfast Deluxe,805.00,31.00,29.00,10.00,104.00,1123.00
+Hotcakes,557.00,9.00,18.00,6.00,91.00,685.00
+Hotcakes With Sausage,619.00,16.00,21.00,7.00,92.00,974.00
+Hotcakes 2pc Happy Meal,430.00,6.00,15.00,5.00,69.00,501.00
+Breakfast Family Meal,0.00,0.00,0.00,0.00,0.00,0.00
+Breakfast Wrap Chicken Sausage,472.00,22.00,24.00,9.00,44.00,1353.00
+Breakfast Wrap Chicken Ham,430.00,17.00,21.00,8.00,43.00,1201.00
+Egg Mcmuffin,289.00,18.00,11.00,5.00,29.00,574.00
+Chicken Muffin,407.00,16.00,21.00,6.00,38.00,847.00
+Sausage Mcmuffin,258.00,16.00,9.00,4.00,29.00,653.00
+Chicken Muffin With Egg,481.00,23.00,26.00,7.00,39.00,921.00
+Sausage Mcmuffin With Egg,337.00,23.00,14.00,6.00,30.00,732.00
+Wholegrain Sausage Mcmuffin Delight 500 Meal,355.00,21.00,12.00,5.20,41.00,740.00
+Wholegrain Sausage Mcmuffin With Egg Delight 500 Meal,434.00,28.00,17.00,6.80,42.00,820.00
+Wholegrain Egg Mcmuffin Delight 500 Meal,366.00,23.00,12.00,5.20,41.00,670.00
+Wholegrain Chicken Muffin Delight 500 Meal,482.00,22.00,21.00,5.90,50.00,930.00
+Filet O Fish Delight 500 Meal,403.00,15.00,13.00,3.50,38.00,570.00
+Cheeseburger Delight 500 Meal,396.00,21.00,13.00,6.40,50.00,810.00
+Filet O Fish Meal With Dasani Drinking Water,421.00,16.00,13.00,3.50,42.00,580.00
+Mcchicken Delight 500 Meal With Dasani Water,483.00,19.00,18.00,3.50,61.00,860.00
+Grilled Chicken Mcwrap Delight 500 Meal With Dasani Water,426.00,25.00,18.00,5.20,41.00,1060.00
+Grilled Chicken Salad Delight 500 Meal Dasani Drinking Water,256.00,23.00,7.00,1.90,25.00,610.00
+Apple Slices,30.00,0.00,0.00,0.00,7.00,17.00
+French Fries Small,315.00,4.00,17.00,5.00,37.00,193.00
+French Fries Medium,384.00,5.00,20.00,6.00,46.00,236.00
+French Fries Large,512.00,6.00,27.00,8.00,61.00,314.00
+Corn Cup 3oz,66.00,2.00,1.00,0.00,12.00,67.00
+Corn Cup 45oz,100.00,4.00,1.00,0.00,18.00,101.00
+Apple Pie,231.00,1.00,12.00,6.00,29.00,185.00
+Hashbrown,149.00,1.00,8.00,1.00,17.00,351.00
+Vanilla Cone,133.00,3.00,4.00,2.00,22.00,56.00
+Chococone,281.00,3.00,16.00,10.00,31.00,65.00
+Hot Fudge Sundae,314.00,6.00,10.00,7.00,49.00,168.00
+Strawberry Sundae,261.00,5.00,6.00,3.00,47.00,84.00
+Mcflurry Oreo,368.00,7.00,13.00,6.00,56.00,221.00
+Mudpie Mcflurry,493.00,9.00,17.00,10.00,76.00,314.00
+Strawberry Shortcake Mcflurry,440.00,7.00,13.00,6.00,74.00,230.00
+Chocolate Milkshake,387.00,10.00,10.00,5.00,65.00,207.00
+Strawberry Milkshake,381.00,9.00,9.00,5.00,65.00,134.00
+Vanilla Milkshake,378.00,9.00,10.00,5.00,63.00,132.00
+Dasani Drinking Water,0.00,0.00,0.00,0.00,0.00,0.00
+Coca Cola Small,109.00,0.00,0.00,0.00,27.00,7.00
+Coca Cola Medium,152.00,0.00,0.00,0.00,38.00,10.00
+Coca Cola Large,221.00,0.00,0.00,0.00,55.00,15.00
+Coca Cola Zero Small,0.00,0.00,0.00,0.00,0.00,29.00
+Coca Cola Zero Medium,0.00,0.00,0.00,0.00,0.00,40.00
+Coca Cola Zero Large,0.00,0.00,0.00,0.00,0.00,58.00
+Sprite Small,80.00,0.00,0.00,0.00,20.00,47.00
+Sprite Medium,112.00,0.00,0.00,0.00,27.00,65.00
+Sprite Large,163.00,0.00,0.00,0.00,40.00,95.00
+Iced Milo Small,227.00,7.00,6.00,3.00,36.00,132.00
+Iced Milo Medium,322.00,10.00,9.00,4.00,51.00,187.00
+Jasmine Green Tea Small,62.00,0.00,0.00,0.00,15.00,22.00
+Jasmine Green Tea Medium,86.00,0.00,0.00,0.00,21.00,30.00
+Iced Lemon Tea Small,66.00,0.00,0.00,0.00,16.00,11.00
+Iced Lemon Tea Medium,91.00,0.00,0.00,0.00,22.00,15.00
+100 Pure Orange Juice Small,193.00,2.00,0.00,0.00,45.00,0.00
+100 Pure Orange Juice Junior,145.00,2.00,0.00,0.00,34.00,0.00
+Magnolia Lo Fat Hi Calcium Milk,96.00,7.00,3.00,2.00,10.00,98.00
+Hot Milo,192.00,5.00,4.00,2.00,33.00,153.00
+Hot Tea,4.00,1.00,0.00,0.00,0.00,3.00
+Mccafe Premium Roast Coffee,14.00,3.00,0.00,0.00,0.00,2.00
+Mccafe Cappuccino,166.00,9.00,9.00,7.00,13.00,0.00
+Mccafe Latte,182.00,10.00,10.00,7.00,14.00,0.00
+Mccafe Iced Latte,237.00,7.00,8.00,6.00,36.00,21.00
+Mocha Frappe Small,456.00,3.00,20.00,10.00,44.00,92.00
+Mocha Frappe Medium,582.00,9.00,26.00,18.00,77.00,343.00
+Caramel Frappe Small,462.00,3.00,20.00,5.00,59.00,95.00
+Caramel Frappe Medium,573.00,9.00,26.00,17.00,76.00,390.00

@@ -1,50 +1,96 @@
-from requests_html import HTMLSession, HTML
+import os
+from requests_html import HTMLSession
 import csv
+from typing import Dict, List
+import pprint
+import pandas as pd
 
-kfc_url = 'https://www.kfc.com.sg/nutrition-allergen'
 
-session = HTMLSession()
-result = session.get(kfc_url)
-result.html.render()
+DATA_DIR = f"{os.getcwd()}/data"
+KFC_URL = "https://www.kfc.com.sg/nutrition-allergen"
+NUM_NUTRIENTS = 9
 
-# extract data from nutrion tables on kfc website
-tables = result.html.find('table.table.table-bordered.tableChartNutrition.table-sm')
-rows = result.html.find('tr')
-# rows = tables[0].find('tr')
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR)
 
-kfc_nutrition_data = []
 
-header_row = rows[0]
-kfc_headers = [header.text for header in header_row.find('th')]
+def write_to_csv(file_path: str,
+                 data: Dict):
 
-# Loop through all cells in the table except for the second column (index 1)
-for row in rows[1:]:
-    values = [cell.text for cell in row.find('td.align-middle')]
-    # save the data to dictionaries with respective key-value pairs
-    nutrition_dict = dict(zip(kfc_headers, values))
-    kfc_nutrition_data.append(nutrition_dict)
+    headers = data[list(data.keys())[0]].keys()
 
-# filtered out items with missing key-value pairs
-filtered_data = []
-for dictionary in kfc_nutrition_data:
-    if len(dictionary.keys()) == 9:
-          filtered_data.append(dictionary)
+    with open(file=file_path, mode="w") as csv_file:
+        csv_writer = csv.DictWriter(f=csv_file, fieldnames=headers)
+        csv_writer.writeheader()
 
-#delete irrelevant key-value pairs (Allergens, Servings) from dictionaries on the list
-for dictionaries in filtered_data:
-    del dictionaries['Food']
-    del dictionaries['Allergens']
-    del dictionaries['Servings (g)']
+        for food in data.keys():
+            csv_writer.writerow(rowdict=data[food])
 
-first_item = filtered_data[0]
-headers = first_item.keys()
+    csv_file.close()
 
-# write and save data to a csv file
-file_path = '/Users/giaphuong/Desktop/Dev/fast food data scrapping/kfc_data.csv'
-with open(file_path,'w') as csv_file:
-    csv_writer = csv.DictWriter(csv_file, fieldnames=headers)
-    csv_writer.writeheader()
-    csv_writer.writerows(filtered_data)
+def main():
 
-csv_file.close()
+    session = HTMLSession()
+    result = session.get(url=KFC_URL)
+    result.html.render()
 
+    # Extract data from nutrion tables on kfc website
+    tables = result.html.find(selector="table.table.table-bordered.tableChartNutrition.table-sm")
+    scraped_food = {}
+
+    for table in tables:
+        table_body = table.find(selector="tbody")[0]
+        table_rows = table_body.find(selector="tr")
+
+        header = table_rows[0]
+        nutrients = header.find(selector="th")
+
+        current_allergens = None
+        if len(nutrients) >= NUM_NUTRIENTS:
+            food_list = table_rows[1:]
+            for idx, food in enumerate(food_list):
+                name = food.find(selector="td")[0].text
+
+                if idx == 0:
+                    current_allergens_list = food.find(selector="td")[1].find(selector="ul")[0].find(selector="li")
+                    current_allergens = ",".join([allergen.text for allergen in current_allergens_list])
+                    weights =  [val.text for val in food.find(selector="td")[2:9]]
+                else:
+                    weights = [val.text for val in food.find(selector="td")[1:8]]
+
+                scraped_food[name] = {
+                    "Food": name,
+                    # "Allergens": current_allergens,
+                    # "Servings (g or ml)": weights[0],
+                    "Energy": weights[1],
+                    "Protein": weights[2],
+                    "Total Fat": weights[3],
+                    "Saturated Fat": weights[4],
+                    "Carbohydrates": weights[5],
+                    "Sodium": weights[6]
+                }
+
+
+            current_allergens = None
+    pprint.pprint(object=scraped_food)
+
+    # Write and save data to a kfc_data.csv file
+    csv_file_path = f"{DATA_DIR}/kfc_data.csv"
+    write_to_csv(file_path=csv_file_path,
+                 data=scraped_food)
+
+    df = pd.read_csv(filepath_or_buffer=csv_file_path, thousands=",")
+
+    # new_servings = []
+    # for val in df["Servings (g or ml)"]:
+    #     if "ml" not in val:
+    #         val += "g"
+    #     new_servings.append(val)
+
+    # new_column = pd.Series(data=new_servings, name='Servings (g or ml)')
+    # df.update(other=new_column)
+
+    df.to_csv(path_or_buf=csv_file_path, index=False)
+
+if __name__ == "__main__":
+    main()
