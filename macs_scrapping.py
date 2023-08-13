@@ -1,17 +1,15 @@
-from requests_html import HTMLSession, HTML
-import asyncio
+import os
+from requests_html import HTMLSession
 import csv
 import concurrent.futures
-import threading
-import urllib.request
 from typing import Dict, List
-import os
+import pprint
 
 # scrape data from the main menu page of Macs
 def prefetch_urls(url: str) -> List:
     session = HTMLSession()
     result = session.get(url)
-    result.html.render(timeout=60)
+    result.html.render(timeout=120)
 
     target_elements = result.html.find('ul.category-list__items > li.category-item > a')
 
@@ -20,9 +18,9 @@ def prefetch_urls(url: str) -> List:
     for element in target_elements:
         food_name = element.text
         extracted_name.append(food_name)
-    
+
     #remove empty entries from the list and store all valid entries in 'food' list
-    food_final = [] # extract data from individual URLs of individual food items    
+    food_final = [] # extract data from individual URLs of individual food items
     for item in extracted_name:
         if item:
             food_final.append(item)
@@ -32,7 +30,7 @@ def prefetch_urls(url: str) -> List:
     for element in target_elements:
         link  = element.attrs['href']
         extracted_link.append(link)
-   
+
     #remove duplicate links
     def remove_duplicates_preserve_order(extracted_link):
         unique_links = []
@@ -52,21 +50,23 @@ def prefetch_urls(url: str) -> List:
     session.close()
     return URLs
 
-# extract data from individual URLs of individual food items    
+# extract data from individual URLs of individual food items
 def task(url: str) -> Dict:
     session = HTMLSession()
     result = session.get(url)
     result.html.render()
     nutrition_table = result.html.find('table.card__table')
 
+    item_name = url.split("/")[-1]
+    item_name = " ".join([word.capitalize() for word in item_name.split("-")])
     # extract all nutrion facts listed in tables
+    nutrition_facts_text = ["Food", item_name]
     for table in nutrition_table:
-        nutrition_facts_text = [element.text for element in table.find('td')]
+        nutrition_facts_text.extend([element.text for element in table.find('td')])
 
     # delete Cholesterol and Dietary Fibres from the nutrition fact lists for comparison with kfc
     del nutrition_facts_text[8:10]
     del nutrition_facts_text[9:11]
-
     # create key-value pairs for dictionaries
     nutrition_dict_keys = nutrition_facts_text[::2]
 
@@ -83,10 +83,13 @@ def task(url: str) -> Dict:
     nutrition_dict_numbers = []
 
     for value in nutrition_dict_values:
+        # element = value.split(" ")[0]
+        # del element[1]
+        # nutrition_dict_numbers.append(" ".join(element))
         element = value.split(" ")[0]
         nutrition_dict_numbers.append(element)   
     
-    # print(nutrition_dict_numbers)
+    print(nutrition_dict_numbers)
     macs_nutrition_dict = {key: value for key, value in zip(nutrition_dict_keys, nutrition_dict_numbers)}
     session.close()
     return macs_nutrition_dict
@@ -96,7 +99,7 @@ def write_to_csv(data: List) -> None:
     first_item = data[0]
     headers = first_item.keys()
 
-    file_path = f'{os.getcwd()}/macs_data.csv'
+    file_path = f'{os.getcwd()}/data/macs_data.csv'
     with open(file_path,'w') as csv_file:
         csv_writer = csv.DictWriter(csv_file, headers)
         csv_writer.writeheader()
@@ -120,7 +123,7 @@ def main():
 
         for result in results:
             macs_nutrition_data.append(result)
-    # print(macs_nutrition_data)
+    print(macs_nutrition_data)
     write_to_csv(macs_nutrition_data)
 
 if __name__ == "__main__":

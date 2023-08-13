@@ -1,27 +1,25 @@
-from requests_html import HTMLSession, HTML
+import os
+from requests_html import HTMLSession
 import csv
+from typing import Dict, List
+import pprint
+import pandas as pd
 
-kfc_url = 'https://www.kfc.com.sg/nutrition-allergen'
 
-session = HTMLSession()
-result = session.get(kfc_url)
-result.html.render()
+DATA_DIR = f"{os.getcwd()}/data"
+KFC_URL = "https://www.kfc.com.sg/nutrition-allergen"
+NUM_NUTRIENTS = 9
 
-# extract data from nutrion tables on kfc website
-tables = result.html.find('table.table.table-bordered.tableChartNutrition.table-sm')
-rows = result.html.find('tr')
-# rows = tables[0].find('tr')
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR)
 
-kfc_nutrition_data = []
 
-header_row = rows[0]
-kfc_headers = [header.text for header in header_row.find('th')]
+def write_to_csv(file_path: str,
+                 data: Dict):
 
 # Loop through all cells in the table except for the second column (index 1)
 for row in rows[1:]:
     values = [cell.text for cell in row.find('td.align-middle')]
-    values = [value.replace(',', '') for value in values]
-
     # save the data to dictionaries with respective key-value pairs
     nutrition_dict = dict(zip(kfc_headers, values))
     kfc_nutrition_data.append(nutrition_dict)
@@ -33,10 +31,10 @@ for dictionary in kfc_nutrition_data:
           filtered_data.append(dictionary)
 
 #delete irrelevant key-value pairs (Allergens, Servings) from dictionaries on the list
-for dictionary in filtered_data:
-    del dictionary['Food']
-    del dictionary['Allergens']
-    del dictionary['Servings (g)']
+for dictionaries in filtered_data:
+    del dictionaries['Food']
+    del dictionaries['Allergens']
+    del dictionaries['Servings (g)']
 
 first_item = filtered_data[0]
 headers = first_item.keys()
@@ -49,3 +47,4 @@ with open(file_path,'w') as csv_file:
     csv_writer.writerows(filtered_data)
 
 csv_file.close()
+
